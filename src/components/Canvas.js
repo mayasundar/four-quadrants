@@ -109,7 +109,7 @@ const Canvas = ({ circles, onAddCircle }) => {
         redrawCanvas();
     }, [circles, redrawCanvas]);
 
-    return <canvas ref={canvasRef} className={styles.canvas} onClick={handleCanvasClick} style={{ position: 'absolute', top: 0, left: 0 }} />;
+    return <canvas ref={canvasRef} className={styles.canvas} onClick={handleCanvasClick} style={{ position: 'absolute', top: 0, left: 0, zIndex:0 }} />;
 };
 
 export default React.memo(Canvas);

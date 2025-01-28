@@ -1,17 +1,79 @@
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-.main{
-  padding: 2rem 0;
-  height:100vh;
+.toolbar {
+  width:70%;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  padding: 8px 16px;
+  background: lavenderblush;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px 10px 10px 10px;
+  z-index: 2;
+}
+
+.canvasWrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
+  margin: auto;
 }
 
-.quad {
-  margin:2rem;
+.axesContainer {
+  position: relative;
+  width: 600px;
+  height: 600px;
+}
+
+.axisLabel {
+  width: 80px;
+  text-align: center;
+}
+
+.uploadedImage {
+  position:absolute;
+  top:0;
+  z-index: 10;
+}
+
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 600px;
+  border: 0.5px solid #ccc;
+}
+
+.inputfile {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 1rem;
+}
+.nondrag{
+  -webkit-user-drag: none;
 
 }
 
-.canvas{
+.draggableInput {
+  display: flex;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.upload{
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {

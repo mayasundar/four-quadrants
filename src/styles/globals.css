@@ -35,6 +35,11 @@ a {
   text-decoration: none;
 }
 
+input[type="file"] {
+  display: none;
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

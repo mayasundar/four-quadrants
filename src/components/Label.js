@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import Draggable from 'react-draggable';
+import styles from '@/styles/Home.module.css';
 
 const Label = ({ x, y, value, onDelete, onDragStop, onUpdateText, id }) => {
     const nodeRef = useRef(null);
@@ -24,12 +25,13 @@ const Label = ({ x, y, value, onDelete, onDragStop, onUpdateText, id }) => {
             onStop={handleDragStop}
             nodeRef={nodeRef}
         >
-            <div className="draggable-input" ref={nodeRef} style={{ position: 'absolute' }}>
+            <div className={styles.draggableInput} ref={nodeRef} style={{ position: 'absolute', zIndex:'2' }}>
                 <input type="text"
                        value={value}
                        onChange={handleTextChange}
                 />
                 <button onClick={() => onDelete(id)}>x</button>
+
             </div>
         </Draggable>
     );

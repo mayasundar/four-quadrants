@@ -6,7 +6,12 @@
   justify-items: center;
 }
 
-.canvas {
+.quad {
+  margin:2rem;
+
+}
+
+.canvas{
 }
 
 @media (prefers-color-scheme: dark) {

@@ -4,12 +4,26 @@ import {useState, useCallback } from "react";
 import Label from '../components/Label.js';
 import Canvas from '../components/Canvas.js';
 import ImageUpload from "../components/ImageUpload.js";
+import { useRouter } from "next/router";
 
-export default function Quadrants() {
+export default function Room() {
+    const router = useRouter();
+    const roomCode = router.query.room;
     const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
     const [uploadedImage, setUploadedImage] = useState(null);
     const [circles, setCircles] = useState([]);
 
+    // TODO: once DB is set up, fetch existing data for this room
+    // useEffect(() => {
+    //     fetch(`/api/rooms/${roomCode}`)
+//         .then((res) => res.json())
+//         .then((data) => {
+//             setCircles(data.circles);
+//             setUploadedImage(data.image);
+//             setImagePosition(data.imagePosition);
+//         });
+// }, [roomCode]);
+    
     const handleImageUpload = (file) => {
         setUploadedImage(URL.createObjectURL(file));
     };

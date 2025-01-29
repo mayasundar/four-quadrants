@@ -54,7 +54,7 @@ const Canvas = ({ circles, onAddCircle }) => {
     const drawCircle = useCallback((ctx, x, y) => {
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, 2 * Math.PI);
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = 'black';
         ctx.fill();
     }, []);
 

@@ -23,7 +23,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
     return (
         <div className={styles.imageUpload}>
             <label htmlFor="file-upload" className="custom-file-upload">
-                Custom Upload ⇧
+                Add Image ⇧
             </label>
             <input id="file-upload" type="file" className={styles.upload} name="myImage" onChange={handleFileUpload} />
 
@@ -40,8 +40,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
                         <div
                             ref={imageRef}
                             style={{
-                                display: "inline-block",
-                                cursor: "grab",
+                                position: "absolute", cursor: "grab", top: 0, left: 0, width: "100%", height: "100%"
                             }}
                             onMouseDown={(e) => {
                                 e.preventDefault();

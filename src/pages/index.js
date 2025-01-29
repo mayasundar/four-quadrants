@@ -19,7 +19,8 @@ export default function Home() {
     };
 
   const addCircle = useCallback((newCircle) => {
-    setCircles((prevCircles) => [...prevCircles, { ...newCircle, text: "" }]);
+      const adjustedCircle = adjustPositionForOverlap(newCircle);
+      setCircles((prevCircles) => [...prevCircles, { ...adjustedCircle, text: "" }]);
   }, []);
 
   const deleteCircle = useCallback((id) => {
@@ -41,6 +42,24 @@ export default function Home() {
         )
     );
   }, []);
+    const adjustPositionForOverlap = (newCircle) => {
+        let adjustedX = newCircle.labelX;
+        let adjustedY = newCircle.labelY;
+
+        circles.forEach((circle) => {
+            while (isOverlapping(adjustedX, adjustedY, circle.labelX, circle.labelY)) {
+                adjustedX += 20;
+                adjustedY += 20;
+            }
+        });
+        return { ...newCircle, labelX: adjustedX, labelY: adjustedY };
+    };
+
+    const isOverlapping = (x1, y1, x2, y2) => {
+        const labelWidth = 150;
+        const labelHeight = 80;
+        return !(x1 + labelWidth < x2 || x1 > x2 + labelWidth || y1 + labelHeight < y2 || y1 > y2 + labelHeight);
+    };
 
     return (
         <>
@@ -51,11 +70,15 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
-                <div className={styles.toolbar}>
+                <div className={styles.sidebar}>
                     <ImageUpload
                         onImageUpload={handleImageUpload}
                         onImagePositionUpdate={handleImagePositionUpdate}
                     />
+                    <li>
+                        <ul>share</ul>
+                        <ul>save</ul>
+                    </li>
                 </div>
                 <div className={styles.canvasWrapper}>
                     <div className={styles.axesContainer}>
@@ -66,32 +89,32 @@ export default function Home() {
                             style={{
                                 position: "absolute",
                                 left: "50%",
-                                top: "-60px",
+                                top: "-40px",
                                 transform: "translateX(-50%)",
                             }}
-                            placeholder="Top Axis"
+                            placeholder="Enter Text"
                         />
                         <input
                             type="text"
                             className={styles.axisLabel}
                             style={{
                                 position: "absolute",
-                                left: "-50px",
+                                left: "-90px",
                                 top: "50%",
                                 transform: "rotate(-90deg) translateY(-50%)",
                             }}
-                            placeholder="Left Axis"
+                            placeholder="Enter Text"
                         />
                         <input
                             type="text"
                             className={styles.axisLabel}
                             style={{
                                 position: "absolute",
-                                right: "-50px",
+                                right: "-90px",
                                 top: "50%",
                                 transform: "rotate(90deg) translateY(-50%)",
                             }}
-                            placeholder="Right Axis"
+                            placeholder="Enter Text"
                         />
                         <input
                             type="text"
@@ -99,10 +122,10 @@ export default function Home() {
                             style={{
                                 position: "absolute",
                                 left: "50%",
-                                bottom: "0px",
+                                bottom: "-40px",
                                 transform: "translateX(-50%)",
                             }}
-                            placeholder="Bottom Axis"
+                            placeholder="Enter Text"
                         />
                     </div>
 
@@ -114,18 +137,21 @@ export default function Home() {
                     />
 
                     <div style={{ position: "absolute", top: 0, left: 0 }}>
-                        {circles.map((circle) => (
+                        {circles.map((circle) => {
+                            const adjustedX = circle.labelX > 450 ? circle.labelX - 150 : circle.labelX;
+                            return(
                             <Label
                                 key={circle.id}
                                 id={circle.id}
-                                x={circle.labelX}
+                                x={adjustedX}
                                 y={circle.labelY}
                                 value={circle.text}
                                 onUpdateText={updateCircleText}
                                 onDelete={() => deleteCircle(circle.id)}
                                 onDragStop={updateCircle}
                             />
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </main>

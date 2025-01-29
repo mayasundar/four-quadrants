@@ -6,16 +6,41 @@
   gap: 16px;
 }
 
-.toolbar {
-  width:70%;
+.sidebar {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+
+  left: 50px;
+  width: 5vw;
+  height: 50vh;
+  background-color: #f4f5f7;
+  color: slategrey;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
-  align-self: center;
-  padding: 8px 16px;
-  background: lavenderblush;
-  border-bottom: 1px solid #ddd;
-  border-radius: 10px 10px 10px 10px;
-  z-index: 2;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 16px;
+
+}
+
+.imageUpload {
+  width:100%;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+.canvas{
+  top: 10px;
+  left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+  z-index:-1;
 }
 
 .canvasWrapper {
@@ -34,14 +59,14 @@
 }
 
 .axisLabel {
-  width: 80px;
+  width: 150px;
   text-align: center;
+
 }
 
 .uploadedImage {
-  position:absolute;
-  top:0;
-  z-index: 10;
+
+
 }
 
 
@@ -67,6 +92,92 @@
   display: flex;
   gap: 8px;
   cursor: pointer;
+  padding: 8px;
+}
+
+.label{
+  position: absolute;
+    width: 150px;
+    min-height: 80px;
+    border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+}
+
+.label:hover{
+
+}
+
+
+.labelInput{
+
+  background: transparent;
+  min-width:100%;
+  max-width:100%;
+  min-height:50px;
+  height:fit-content;
+  resize: both;
+  overflow-y: visible;
+  overflow-block: visible;
+  border:none;
+  border-radius: 8px;
+  outline:none;
+  padding:5px;
+
+}
+
+
+.draggy{
+
+  width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0;
+    cursor: grab;
+  padding: 8px;
+}
+
+.draggy:hover{
+  border-top: 2px solid #ccc;
+
+}
+
+.deleteButton{
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 100px;
+  width:14px;
+  height:14px;
+  font-size:10px;
+  background-color: transparent;
+  color: #ccc;
+  cursor: grab;
+  justify-self: center;
+  vertical-align: center;
+
+}
+
+.deleteButton:hover{
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid crimson;
+  border-radius: 100px;
+  width:14px;
+  height:14px;
+  font-size:10px;
+  background-color: transparent;
+  color:crimson;
+  cursor: grab;
+  justify-self: center;
+  vertical-align: center;
 }
 
 .upload{
@@ -94,38 +205,7 @@
   grid-row-start: 2;
 }
 
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
-  margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
 
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-}
 
 @media (max-width: 600px) {
   .page {
@@ -141,29 +221,4 @@
     text-align: center;
   }
 
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
 }

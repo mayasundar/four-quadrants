@@ -36,6 +36,11 @@ export default function handler(req, res) {
                 }
             });
 
+            socket.on("get-players", (room) => {
+                const players = Object.values(users).filter((user) => user.room === room);
+                io.to(room).emit("update-players", players);
+            });
+
             socket.on("disconnect", () => {
                 delete users[socket.id];
                 console.log("User disconnected:", socket.id);

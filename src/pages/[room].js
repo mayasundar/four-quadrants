@@ -12,7 +12,7 @@ export default function Room({socket}) {
     const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
     const [uploadedImage, setUploadedImage] = useState(null);
     const [circles, setCircles] = useState([]);
-
+    const [players, setPlayers] = useState([]);
     // TODO: once DB is set up, fetch existing data for this room
     // useEffect(() => {
     //     fetch(`/api/rooms/${roomCode}`)
@@ -23,6 +23,7 @@ export default function Room({socket}) {
 //             setImagePosition(data.imagePosition);
 //         });
 // }, [roomCode]);
+    // check if socket.id has a name, redirect to home
     useEffect(() => {
         if (socket && roomCode) {
             socket.emit('check-name', roomCode);
@@ -31,6 +32,17 @@ export default function Room({socket}) {
             });
             return () => {
                 socket.off('redirect-name');
+            };
+        }
+    }, [socket, roomCode]);
+    // display players in the room
+    useEffect(() => {
+        if (socket && roomCode){
+            socket.emit('get-players', roomCode);
+            socket.on('update-players', setPlayers);
+            return () => {
+                socket.off('update-players');
+                socket.off('player-joined');
             };
         }
     }, [socket, roomCode]);
@@ -100,10 +112,16 @@ export default function Room({socket}) {
                         onImageUpload={handleImageUpload}
                         onImagePositionUpdate={handleImagePositionUpdate}
                     />
-                    <li>
-                        <ul>share</ul>
-                        <ul>save</ul>
-                    </li>
+                    <h2>Players</h2>
+                    <ul>
+                        {players.map((player, index) => (
+                            <li key={index}>{player.name}</li>
+                        ))}
+                    </ul>
+                    <ul>
+                        <li>share</li>
+                        <li>save</li>
+                    </ul>
                 </div>
                 <div className={styles.canvasWrapper}>
                     <div className={styles.axesContainer}>

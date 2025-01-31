@@ -1,12 +1,12 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import {useState, useCallback } from "react";
+import {useState, useCallback, useEffect } from "react";
 import Label from '../components/Label.js';
 import Canvas from '../components/Canvas.js';
 import ImageUpload from "../components/ImageUpload.js";
 import { useRouter } from "next/router";
 
-export default function Room() {
+export default function Room({socket}) {
     const router = useRouter();
     const roomCode = router.query.room;
     const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
@@ -23,7 +23,18 @@ export default function Room() {
 //             setImagePosition(data.imagePosition);
 //         });
 // }, [roomCode]);
-    
+    useEffect(() => {
+        if (socket && roomCode) {
+            socket.emit('check-name', roomCode);
+            socket.on('redirect-name', (room) => {
+                router.push(`/?room=${room}`);
+            });
+            return () => {
+                socket.off('redirect-name');
+            };
+        }
+    }, [socket, roomCode]);
+
     const handleImageUpload = (file) => {
         setUploadedImage(URL.createObjectURL(file));
     };

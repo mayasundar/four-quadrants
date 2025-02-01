@@ -17,12 +17,14 @@ body, textarea, input{
   max-width: 100vw;
   overflow-x: hidden;
   font-family: var(--font-overpass);
-
 }
 
 input{
-    font-family: var(--font-overpass);
+  font-family: var(--font-overpass);
   font-size: 1.2rem;
+  padding:5px;
+  width:fit-content;
+
 }
 
 body {

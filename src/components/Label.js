@@ -51,6 +51,8 @@ const Label = ({ x, y, value, onDelete, onDragStop, onUpdateText, id }) => {
                     autoFocus={true}
                     placeholder={"Enter text"}
                     draggable="false"
+                    autoCapitalize={"none"}
+                    autoCorrect={"off"}
                 />
             </div>
         </Draggable>

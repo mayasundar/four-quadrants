@@ -103,7 +103,8 @@
 }
 
 .axisLabel {
-  width: 150px;
+  min-width: 100px;
+  max-width: fit-content;
   text-align: center;
 
 }
@@ -159,7 +160,6 @@
 
 
 .labelInput{
-
   background: transparent;
   min-width:100%;
   max-width:100%;
@@ -167,6 +167,7 @@
   height:fit-content;
   resize: both;
   overflow-y: visible;
+  overflow: visible;
   overflow-block: visible;
   border:none;
   border-radius: 8px;
@@ -177,14 +178,13 @@
 
 
 .draggy{
-
   width: 100%;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 0;
-    cursor: grab;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0;
+  cursor: grab;
   padding: 8px;
 }
 

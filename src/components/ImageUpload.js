@@ -13,7 +13,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
         if (file) {
             const id = Date.now();
             imageRefs.current.set(id, React.createRef());
-            setImages(prev=>[...prev, {id: id, file, position: {x:0, y:0},size: { width: 100, height: 180 }
+            setImages(prev=>[...prev, {id: id, file, position: {x:0, y:0},size: { width: '50%', height: 'min-content' }
             }]);
         }
     };
@@ -54,7 +54,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
                         <div
                             ref={imageRefs.current.get(image.id)}
                             style={{
-                                position: "absolute", zIndex:1, cursor: "grab", width: "100%", height: "100%"
+                                position: "absolute", zIndex:1, cursor: "grab",
                             }}
                             onMouseEnter={() => setHoveredImage(image.id)}
                             onMouseLeave={() => setHoveredImage(null)}
@@ -96,7 +96,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
                                     src={URL.createObjectURL(image.file)}
                                     style={{
                                         width: "100%",
-                                        height: "auto",
+                                        height: "min-content",
                                         objectFit: "contain",
                                     }}
                                 />

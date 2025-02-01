@@ -41,6 +41,25 @@ export default function handler(req, res) {
                 io.to(room).emit("update-players", players);
             });
 
+            socket.on("add-circle", ({ roomCode, circles }) => {
+                io.to(roomCode).emit("add-circle", { circles });
+            });
+            socket.on("delete-circle", ({ roomCode, id }) => {
+                io.to(roomCode).emit("delete-circle", { id });
+            });
+
+            socket.on("update-circle", ({ roomCode, id, newX, newY }) => {
+                io.to(roomCode).emit("update-circle", { id, newX,newY });
+            });
+
+            socket.on("update-circle-text", ({ roomCode, id, newText }) => {
+                io.to(roomCode).emit("update-circle-text", { id, newText });
+            });
+
+            socket.on("update-axis-labels", ({roomCode, top, left, right, bottom})=>{
+                io.to(roomCode).emit("update-axis-labels", {top, left, right, bottom});
+            })
+
             socket.on("disconnect", () => {
                 delete users[socket.id];
                 console.log("User disconnected:", socket.id);

@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }) {
 
   return (
       <div className={`${overpass.className}`}>
-        <Component {...pageProps} socket={socket} />;
+        <Component {...pageProps} socket={socket} />
       </div>
     );
 }

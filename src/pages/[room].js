@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 export default function Room({socket}) {
     const router = useRouter();
     const roomCode = router.query.room;
-    const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
+    const [imagePositions, setImagePositions] = useState({});
     const [uploadedImage, setUploadedImage] = useState(null);
     const [circles, setCircles] = useState([]);
     const [players, setPlayers] = useState([]);
@@ -51,8 +51,8 @@ export default function Room({socket}) {
         setUploadedImage(URL.createObjectURL(file));
     };
 
-    const handleImagePositionUpdate = (position) => {
-        setImagePosition(position);
+    const handleImagePositionUpdate = (imageId, position) => {
+        setImagePositions(prev=>({...prev, [imageId]: position}));
     };
 
   const addCircle = useCallback((newCircle) => {
@@ -108,20 +108,24 @@ export default function Room({socket}) {
             </Head>
             <main className={styles.main}>
                 <div className={styles.sidebar}>
-                    <ImageUpload
-                        onImageUpload={handleImageUpload}
-                        onImagePositionUpdate={handleImagePositionUpdate}
-                    />
                     <h2>Players</h2>
-                    <ul>
+                    <p>
                         {players.map((player, index) => (
-                            <li key={index}>{player.name}</li>
+                            <p key={index}>{player.name}</p>
                         ))}
-                    </ul>
+                    </p>
+                </div>
+                <div className={styles.tools}>
                     <ul>
                         <li>share</li>
                         <li>save</li>
                     </ul>
+
+                    <ImageUpload
+                        onImageUpload={handleImageUpload}
+                        onImagePositionUpdate={handleImagePositionUpdate}
+                        className={styles.imageUpload}
+                    />
                 </div>
                 <div className={styles.canvasWrapper}>
                     <div className={styles.axesContainer}>

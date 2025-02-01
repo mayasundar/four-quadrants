@@ -4,64 +4,96 @@ import { Resizable } from "re-resizable";
 import styles from "@/styles/Home.module.css";
 
 const ImageUpload = ({ onImagePositionUpdate }) => {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [size, setSize] = useState({ width: 100, height: '180' });
-    const imageRef = useRef(null);
+    const [images, setImages] = useState([]);
+    const imageRefs = useRef(new Map());
+    const [hoveredImage, setHoveredImage] = useState(null);
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setSelectedImage(file);
+            const id = Date.now();
+            imageRefs.current.set(id, React.createRef());
+            setImages(prev=>[...prev, {id: id, file, position: {x:0, y:0},size: { width: 100, height: 180 }
+            }]);
         }
     };
 
-    const handleResize = (e, { size }) => {
-        setSize(size);
+    const handleImageDelete = (id) => {
+        imageRefs.current.delete(id)
+        setImages((prev) => prev.filter((image) => image.id !== id));
+    };
+
+    const handleResize = (id, newSize) => {
+        setImages(prev => prev.map(img =>
+            img.id === id ? { ...img, size:newSize } : img
+        ));
     };
 
     return (
         <div className={styles.imageUpload}>
-            <label htmlFor="file-upload" className="custom-file-upload">
+            <label htmlFor="file-upload" className={styles.customFileUpload}>
                 Add Image ⇧
             </label>
             <input id="file-upload" type="file" className={styles.upload} name="myImage" onChange={handleFileUpload} />
 
-            {selectedImage && (
-                <div>
+            {images.map((image) => (
                     <Draggable
-                        position={position}
+                        className={styles.imgDrag}
+                        key={image.id}
+                        position={image.position}
+                        nodeRef={imageRefs.current.get(image.id)}
                         onDrag={(e, data) => {
-                            setPosition({ x: data.x, y: data.y });
-                            onImagePositionUpdate({ x: data.x, y: data.y });
+                            setImages(prev => prev.map(img =>
+                                img.id === image.id
+                                    ? { ...img, position: { x: data.x, y: data.y } }
+                                    : img
+                            ));
+                            onImagePositionUpdate(image.id,{ x: data.x, y: data.y });
                         }}
-                        nodeRef={imageRef}
                     >
                         <div
-                            ref={imageRef}
+                            ref={imageRefs.current.get(image.id)}
                             style={{
-                                position: "absolute", cursor: "grab", top: 0, left: 0, width: "100%", height: "100%"
+                                position: "absolute", zIndex:1, cursor: "grab", width: "100%", height: "100%"
                             }}
+                            onMouseEnter={() => setHoveredImage(image.id)}
+                            onMouseLeave={() => setHoveredImage(null)}
                             onMouseDown={(e) => {
                                 e.preventDefault();
-
-                                imageRef.current.style.cursor = "grabbing";
+                                const ref = imageRefs.current.get(image.id);
+                                if (ref.current){
+                                    ref.current.style.cursor = "grabbing";
+                                }
                             }}
                             onMouseUp={() => {
-                                imageRef.current.style.cursor = "grab";
+                                const ref = imageRefs.current.get(image.id);
+                                if (ref.current){
+                                    ref.current.style.cursor = "grab";
+                                }
                             }}
                             className={styles.uploadedImage}
                         >
-                            <button onClick={() => setSelectedImage(null)}>x</button>
-
+                            {(hoveredImage === image.id) && (
+                                <button
+                                    className={styles.imgDeleteButton}
+                                    onClick={() => handleImageDelete(image.id)}
+                                >
+                                    x
+                                </button>
+                            )}
                             <Resizable
-                                size={size}
+                                size={image.size}
                                 lockAspectRatio={true}
-                                onResizeStop={handleResize}
+                                onResizeStop={(e, direction, ref, d) => {
+                                    handleResize(image.id, {
+                                        width: image.size.width + d.width,
+                                        height: image.size.height + d.height
+                                    });
+                                }}
                             >
                                 <img className={styles.nondrag}
                                     alt="Uploaded"
-                                    src={URL.createObjectURL(selectedImage)}
+                                    src={URL.createObjectURL(image.file)}
                                     style={{
                                         width: "100%",
                                         height: "auto",
@@ -71,8 +103,7 @@ const ImageUpload = ({ onImagePositionUpdate }) => {
                             </Resizable>
                         </div>
                     </Draggable>
-                </div>
-            )}
+            ))}
         </div>
     );
 };

@@ -1,9 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import Draggable from 'react-draggable';
 import styles from '../styles/Home.module.css';
 
 const Label = ({ x, y, value, onDelete, onDragStop, onUpdateText, id }) => {
     const nodeRef = useRef(null);
+    const [hoveredLabel, setHoveredLabel] = useState(null);
 
     const handleDragStop = useCallback(
         (e, data) => {
@@ -27,13 +28,19 @@ const Label = ({ x, y, value, onDelete, onDragStop, onUpdateText, id }) => {
             handle={`.${styles.draggy}`}
         >
             <div ref={nodeRef} className={styles.label}
+                 onMouseEnter={() => setHoveredLabel(id)}
+                 onMouseLeave={() => setHoveredLabel(null)}
             >
                 <div className={styles.draggy}>
 
-                    <button
-                        onClick={() => onDelete(id)}
-                        className={styles.deleteButton}>x
-                    </button>
+                    {(hoveredLabel === id) && (
+                        <button
+                            className={styles.deleteButton}
+                            onClick={() => onDelete(id)}
+                        >
+                            x
+                        </button>
+                    )}
 
                 </div>
 

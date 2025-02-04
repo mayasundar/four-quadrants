@@ -1,11 +1,11 @@
-import React, { useRef, useCallback, useEffect, useMemo } from "react";
+import React, {useRef, useCallback, useEffect, useMemo, useState} from "react";
 import styles from "@/styles/Home.module.css";
 
-const Canvas = ({ circles, onAddCircle }) => {
+const Grid = ({ }) => {
     const canvasRef = useRef(null);
     const size = 600;
     const scale = useMemo(() => (typeof window !== "undefined" ? window.devicePixelRatio : 1), []);
-    const s = 21;
+    const s = 300;
 
     const gridConstants = useMemo(() => {
         const nX = Math.floor(size / s);
@@ -39,7 +39,7 @@ const Canvas = ({ circles, onAddCircle }) => {
     }, [size, pL, pR, pT, pB, s]);
 
     const drawAxes = useCallback((ctx) => {
-        ctx.strokeStyle = "#7F868CFF";
+        ctx.strokeStyle = 'lightgrey';
         ctx.lineWidth = 0.5;
         ctx.beginPath();
         const centerX = Math.round(gridConstants.nX / 2) * s + pL;
@@ -51,12 +51,6 @@ const Canvas = ({ circles, onAddCircle }) => {
         ctx.stroke();
     }, [size, pL, pR, pT, pB, s, gridConstants]);
 
-    const drawCircle = useCallback((ctx, x, y) => {
-        ctx.beginPath();
-        ctx.arc(x, y, 6, 0, 2 * Math.PI);
-        ctx.fillStyle = 'black';
-        ctx.fill();
-    }, []);
 
     const redrawCanvas = useCallback(() => {
         const canvas = canvasRef.current;
@@ -71,10 +65,9 @@ const Canvas = ({ circles, onAddCircle }) => {
 
         drawGrid(ctx);
         drawAxes(ctx);
-        circles.forEach(circle => drawCircle(ctx, circle.x, circle.y));
 
         ctx.restore();
-    }, [circles, drawGrid, drawAxes, drawCircle, scale]);
+    }, [drawGrid, drawAxes, scale]);
 
 
     useEffect(() => {
@@ -90,26 +83,8 @@ const Canvas = ({ circles, onAddCircle }) => {
 
     }, [size, scale, redrawCanvas]);
 
-    const handleCanvasClick = useCallback((event) => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const x = (event.clientX - rect.left) * (size / rect.width);
-        const y = (event.clientY - rect.top) * (size / rect.height);
-
-        const gridX = Math.round((x - pL) / s) * s + pL;
-        const gridY = Math.round((y - pT) / s) * s + pT;
-
-        onAddCircle({ id: Date.now(), x: gridX, y: gridY, labelX: gridX + 5, labelY: gridY + 5 });
-    }, [size, pL, pT, s, onAddCircle]);
-
-
-    useEffect(() => {
-        redrawCanvas();
-    }, [circles, redrawCanvas]);
-
-    return <canvas ref={canvasRef} className={styles.canvas} onClick={handleCanvasClick} style={{ position: 'absolute', top: 0, zIndex:0 }} />;
+    return <canvas ref={canvasRef} />;
 };
 
-export default React.memo(Canvas);
+export default Grid;

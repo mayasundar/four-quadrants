@@ -33,25 +33,56 @@ export default function JoinRoom({socket}) {
 
   return (
     <div>
-      <h1>Join Room</h1>
       <form className={styles.form} onSubmit={(e)=>e.preventDefault()}>
           {/*required regardless*/}
-          <label htmlFor="name">Enter your name</label>
-          <input id="name" type="text" value={name} required onChange={(e)=>setName(e.target.value)}/>
-          <br></br>
+          <div className={styles.joinRoomContainer}>
+              <div className={styles.q1}>
+                  <div className={styles.stack}>
+                      <p>Four Quadrants</p>
+                      <a className={styles.maya} href="https://www.mayasundar.com" target="_blank" rel="noopener noreferrer">
+                          by Maya Sundar</a>
+                  </div>
+              </div>
 
-          {/*create new room*/}
-          <br></br>
-          <button type="submit" onClick={(e)=>handleSubmit(name, null, 'create')}>Create Room</button>
 
-          <p>or</p>
+              <div className={styles.q2}>
+                  <div className={styles.stack}>
+                  <p>Enter Name</p>
+                    <input id="name" type="text" placeholder={"Enter Your Name"} value={name} required onChange={(e)=>setName(e.target.value)}/>
+                  </div>
+          </div>
 
-          {/*join existing room*/}
-          <label htmlFor="roomName">Enter room code</label>
-        <input id="roomName" type="text" value={roomCode} onChange={(e) => setRoomCode(e.target.value)} disabled={router.query.room !== undefined}/>
-          <br></br>
 
-          <button type="submit" onClick={(e)=>handleSubmit(name, roomCode, 'join')}>Join Room</button>
+          <div className={styles.q3}>
+              <div className={styles.stack}>
+
+              <p>Create Room</p>
+
+              <button type="submit" className={styles.btn} onClick={(e)=>handleSubmit(name, null, 'create')}>Create Room</button>
+              </div>
+          </div>
+
+          <div className={styles.q4}>
+              <div className={styles.stack}>
+              <p>Join Room</p>
+
+              <input id="roomName" type="text" placeholder={"Enter Room Code"} value={roomCode} onChange={(e) => setRoomCode(e.target.value)} disabled={router.query.room !== undefined}/>
+              <button className={styles.btn} type="submit" onClick={(e)=>handleSubmit(name, roomCode, 'join')}>Join Room</button>
+              </div>
+          </div>
+
+
+          {/*    /!*create new room*!/*/}
+          {/*    <label htmlFor={"roomName"}>Create Room:</label>*/}
+          {/*      <button type="submit" onClick={(e)=>handleSubmit(name, null, 'create')}>Create Room</button>*/}
+          {/*<p>or</p>*/}
+
+          {/*/!*join existing room*!/*/}
+          {/*        <label htmlFor="roomName">Room Code:</label>*/}
+          {/*          <input id="roomName" type="text" placeholder={"Enter Room Code"} value={roomCode} onChange={(e) => setRoomCode(e.target.value)} disabled={router.query.room !== undefined}/>*/}
+          {/*        <button type="submit" onClick={(e)=>handleSubmit(name, roomCode, 'join')}>Join Room</button>*/}
+          </div>
+
       </form>
     </div>
   );

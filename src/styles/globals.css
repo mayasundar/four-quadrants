@@ -1,8 +1,17 @@
 
 
-                                                                                                                                                                                                                                                           :root {
+:root {
+  --font-overpass: 'Overpass Mono', monospace;
+  --darkgrey: #7f868c;
+  --grey: #a3acb4;
+
+  --black: #3e4042;
+  --lightgrey: #e9edf3;
+  --midgrey: #e0e5ec;
   --background: #ffffff;
   --foreground: #171717;
+
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -12,23 +21,41 @@
   }
 }
 
+*{
+  font-family: var(--font-overpass);
+}
+
 html,
 body, textarea, input{
   max-width: 100vw;
   overflow-x: hidden;
   font-family: var(--font-overpass);
+  color: var(--black);
 }
 
 input{
   font-family: var(--font-overpass);
+  color: var(--black);
   font-size: 1.2rem;
   padding:5px;
   width:fit-content;
 
 }
 
+input::placeholder{
+  color: var(--black);
+}
+
+textarea::placeholder{
+    color: var(--black);
+}
+
+textarea{
+  color: var(--black);
+}
+
 body {
-  color: var(--foreground);
+  color: var(--black);
   background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,7 +69,6 @@ body {
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
 input[type="file"] {

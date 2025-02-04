@@ -23,6 +23,9 @@ export default function Room({socket}) {
 //             setImagePosition(data.imagePosition);
 //         });
 // }, [roomCode]);
+
+    //TODO: set up cursor / mouse coordinates
+
     // check if socket.id has a name, redirect to home
     useEffect(() => {
         if (socket && roomCode) {
@@ -87,9 +90,9 @@ export default function Room({socket}) {
     };
 
   const addCircle = useCallback((newCircle) => {
-      const adjustedCircle = adjustPositionForOverlap(newCircle);
+      // const adjustedCircle = adjustPositionForOverlap(newCircle);
       setCircles((prevCircles) => {
-          const updatedCircles= [...prevCircles, { ...adjustedCircle, id: Date.now().toString(), text: "" }];
+          const updatedCircles= [...prevCircles, { ...newCircle, id: Date.now().toString(), text: "" }];
         socket.emit("add-circle", { roomCode, circles: updatedCircles });
         return updatedCircles;
       });
@@ -133,24 +136,24 @@ export default function Room({socket}) {
       });
   }, []);
 
-    const adjustPositionForOverlap = (newCircle) => {
-        let adjustedX = newCircle.labelX;
-        let adjustedY = newCircle.labelY;
-
-        circles.forEach((circle) => {
-            while (isOverlapping(adjustedX, adjustedY, circle.labelX, circle.labelY)) {
-                adjustedX += 20;
-                adjustedY += 20;
-            }
-        });
-        return { ...newCircle, labelX: adjustedX, labelY: adjustedY };
-    };
-
-    const isOverlapping = (x1, y1, x2, y2) => {
-        const labelWidth = 150;
-        const labelHeight = 80;
-        return !(x1 + labelWidth < x2 || x1 > x2 + labelWidth || y1 + labelHeight < y2 || y1 > y2 + labelHeight);
-    };
+    // const adjustPositionForOverlap = (newCircle) => {
+    //     let adjustedX = newCircle.labelX;
+    //     let adjustedY = newCircle.labelY;
+    //
+    //     circles.forEach((circle) => {
+    //         while (isOverlapping(adjustedX, adjustedY, circle.labelX, circle.labelY)) {
+    //             adjustedX += 20;
+    //             adjustedY += 20;
+    //         }
+    //     });
+    //     return { ...newCircle, labelX: adjustedX, labelY: adjustedY };
+    // };
+    //
+    // const isOverlapping = (x1, y1, x2, y2) => {
+    //     const labelWidth = 150;
+    //     const labelHeight = 80;
+    //     return !(x1 + labelWidth < x2 || x1 > x2 + labelWidth || y1 + labelHeight < y2 || y1 > y2 + labelHeight);
+    // };
 
     return (
         <>
@@ -160,29 +163,36 @@ export default function Room({socket}) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <div className={styles.room}>
             <main className={styles.main}>
                 <div className={styles.sidebar}>
-                    <h3>Users</h3>
-                    <p>
-                        {players.map((player, index) => (
-                            <p key={index}>{player.name}</p>
-                        ))}
-                    </p>
+                    <div>
+                        <h3>Users</h3>
+                        <p>
+                            {players.map((player, index) => (
+                                <p key={index}>{player.name}</p>
+                            ))}
+                        </p>
+                    </div>
 
-                </div>
-                <div className={styles.tools}>
-                    <h3>Tools</h3>
-                    {/*<ul>*/}
-                    {/*    <li>share</li>*/}
-                    {/*    <li>save</li>*/}
-                    {/*</ul>*/}
+                    <div>
+                        <h3>Tools</h3>
+                        {/*<ul>*/}
+                        {/*    <li>share</li>*/}
+                        {/*    <li>save</li>*/}
+                        {/*</ul>*/}
 
-                    <ImageUpload
-                        onImageUpload={handleImageUpload}
-                        onImagePositionUpdate={handleImagePositionUpdate}
-                        className={styles.imageUpload}
-                    />
+                        <ImageUpload
+                            socket={socket}
+                            roomCode={roomCode}
+                            onImageUpload={handleImageUpload}
+                            onImagePositionUpdate={handleImagePositionUpdate}
+                            className={styles.imageUpload}
+                        />
+
+                    </div>
                 </div>
+
                 <div className={styles.canvasWrapper}>
                     <div className={styles.axesContainer}>
 
@@ -267,6 +277,7 @@ export default function Room({socket}) {
                     </div>
                 </div>
             </main>
+            </div>
         </>
     );
 }

@@ -2,12 +2,13 @@
   "name": "four-quadrants",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mayasundar.com/four-quadrants",
   "scripts": {
     "dev": "next dev",
     "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "gh-pages -d .next -t true --cname www.mayasundar.com"
+    "deploy": "npm run build && touch ./out/.nojekyll && gh-pages -d out -t true"
   },
   "dependencies": {
     "next": "15.1.6",

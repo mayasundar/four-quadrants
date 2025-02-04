@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "gh-pages -d .next -t true --cname www.mayasundar.com"
   },
   "dependencies": {
     "next": "15.1.6",
@@ -16,5 +17,8 @@
     "react-draggable": "^4.4.6",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
